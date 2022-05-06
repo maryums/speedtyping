@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
+import { ThemeContext } from './themeContext'
 
 const App = () => {
-    const STARTING_TIME = 3
+    const STARTING_TIME = 15
 
     const [text, setText] = useState('')
     const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
     const [game, setGame] = useState(false)
     const [wordCount, setwordCount] = useState(0)
+    const textRef = useRef(null)
 
 
     function handleChange(e) {
@@ -34,6 +36,8 @@ const App = () => {
 
     const startGame = () => {
         setGame(true)
+        textRef.current.disabled = false
+        textRef.current.focus()
     }
 
     const handleRest = () => {
@@ -43,12 +47,23 @@ const App = () => {
         setwordCount(0)
     }
 
+    const theme = useContext(ThemeContext)
+    console.log(theme)
 
     return (
-        <div>
+
+        <div className={`${theme.theme}-theme`}>
+            <button
+                onClick={theme.toggleTheme}
+            // className={`${theme.theme}-theme` }
+            >
+                Switch Theme
+            </button>
+
             <h1>Speed Typing Test</h1>
 
             <textarea
+                ref={textRef}
                 disabled={!game}
                 onChange={(e) => handleChange(e)}
                 value={text}

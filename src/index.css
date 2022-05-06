@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Xanh+Mono&display=swap');
 
 html, body {
-  background: black;
-  color: #8ffcff;;
+
   margin:0;
   padding: 0;
   padding-top: 10px;
@@ -37,4 +36,14 @@ textarea {
   height: 200px;
   background: #8ffcff;
   padding: 10px;
+}
+.dark-theme {
+  height: 100vh;
+  background-color: black;
+  color: whitesmoke;
+}
+
+.light-theme {
+  background-color: white;
+  color: black;
 }
