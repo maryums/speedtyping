@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
 const App = () => {
+    const STARTING_TIME = 15
+
     const [text, setText] = useState('')
-    const [timeRemaining, setTimeRemaining] = useState(5)
+    const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
     const [game, setGame] = useState(false)
     const [wordCount, setwordCount] = useState(0)
+    const [textAreadisabled, setTextAreaDisabled] = useState(true)
+
 
     function handleChange(e) {
         setText(e.target.value)
@@ -19,36 +23,46 @@ const App = () => {
     }
 
     useEffect(() => {
-        if (game === true && timeRemaining > 0) {
+        if (game && timeRemaining > 0) {
             setTimeout(() => {
                 setTimeRemaining(time => time - 1)
             }, 1000)
-        } if (timeRemaining === 0) {
+        } else if (timeRemaining === 0) {
+            setTextAreaDisabled(!textAreadisabled)
+            console.log("Am I disabled?")
             wordCounter(text)
+
         }
     }, [timeRemaining, game, wordCount])
 
     const startGame = () => {
         setGame(!game)
+        setTextAreaDisabled(!textAreadisabled)
     }
 
     const handleRest = () => {
+        setTextAreaDisabled(!textAreadisabled)
         setGame(!game)
         setText('')
-        setTimeRemaining(5)
+        setTimeRemaining(STARTING_TIME)
         setwordCount(0)
     }
+
 
     return (
         <div>
             <h1>Speed Typing Test</h1>
 
             <textarea
+                disabled={textAreadisabled}
                 onChange={(e) => handleChange(e)}
                 value={text}
             />
 
-            <h4>{timeRemaining}</h4>
+
+            {wordCount > 0 && <h2> Word Count: {wordCount} </h2>}
+
+            <h4>Time Remaining: {timeRemaining}</h4>
 
             {wordCount > 0 && <button
                 onClick={() => handleRest()}
@@ -58,7 +72,7 @@ const App = () => {
                 onClick={() => startGame(text)}
             > Start Game</button>}
 
-            {wordCount > 0 && <h1> Word Count: {wordCount} </h1>}
+
 
 
         </div>
