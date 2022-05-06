@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
 const App = () => {
-    const STARTING_TIME = 15
+    const STARTING_TIME = 3
 
     const [text, setText] = useState('')
     const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
     const [game, setGame] = useState(false)
     const [wordCount, setwordCount] = useState(0)
-    const [textAreadisabled, setTextAreaDisabled] = useState(true)
 
 
     function handleChange(e) {
@@ -28,21 +27,17 @@ const App = () => {
                 setTimeRemaining(time => time - 1)
             }, 1000)
         } else if (timeRemaining === 0) {
-            setTextAreaDisabled(!textAreadisabled)
-            console.log("Am I disabled?")
             wordCounter(text)
-
+            setGame(false)
         }
     }, [timeRemaining, game, wordCount])
 
     const startGame = () => {
-        setGame(!game)
-        setTextAreaDisabled(!textAreadisabled)
+        setGame(true)
     }
 
     const handleRest = () => {
-        setTextAreaDisabled(!textAreadisabled)
-        setGame(!game)
+        setGame(false)
         setText('')
         setTimeRemaining(STARTING_TIME)
         setwordCount(0)
@@ -54,9 +49,10 @@ const App = () => {
             <h1>Speed Typing Test</h1>
 
             <textarea
-                disabled={textAreadisabled}
+                disabled={!game}
                 onChange={(e) => handleChange(e)}
                 value={text}
+
             />
 
 
@@ -69,11 +65,9 @@ const App = () => {
             > Restart Game</button>}
 
             {wordCount === 0 && <button
+                disabled={game}
                 onClick={() => startGame(text)}
             > Start Game</button>}
-
-
-
 
         </div>
     )
